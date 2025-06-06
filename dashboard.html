@@ -11,14 +11,16 @@
                    img-src 'self' data:;
                    connect-src 'self' https://raw.githubusercontent.com;">
     <title>SAPRA Dashboard (Bootstrap)</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
     <style>
+        /* 1. Body Background */
         body {
             font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
+            background-color: #F0F2F5; /* Facebook-like light gray */
         }
+
         .sidebar {
             position: fixed;
             top: 0;
@@ -130,12 +132,13 @@
             /* Combine transitions */
             transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out, transform 0.2s ease-in-out;
         }
+        /* 2. Sidebar selected item */
         .tree-node.selected {
-            background-color: rgba(0, 173, 181, 0.2); /* accent/20 */
-            color: #00adb5; /* accent */
-            font-weight: 500; /* font-medium */
+            background-color: rgba(28, 132, 252, 0.15) !important; /* FB Blue accent bg, !important to override existing */
+            color: #1C84FC !important; /* FB Blue accent text, !important to override existing */
+            font-weight: 500;
         }
-        .tree-node .bi {
+        .tree-node .material-icons {
             margin-right: 0.625rem; /* mr-2.5 */
             font-size: 1.1em;
         }
@@ -173,9 +176,18 @@
             flex-direction: column;
             justify-content: space-between;
         }
-        .summary-card:hover { /* Default hover for non-gradient cards */
+        /* Keep existing hover for non-gradient summary cards */
+        .summary-card:not(.gradient-form-a):not(.gradient-form-b):not(.gradient-form-c):not(.gradient-form-d):hover {
             transform: translateY(-4px);
             box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        }
+        /* For gradient cards, adjust their hover shadow if needed, but their main appearance is kept */
+        .gradient-form-a:hover,
+        .gradient-form-b:hover,
+        .gradient-form-c:hover,
+        .gradient-form-d:hover {
+            /* transform is already very custom, only overriding shadow for consistency if desired */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.25) !important; /* Slightly more pronounced shadow for these visually distinct cards */
         }
         .summary-card .card-title-custom {
              font-size: 0.875rem; /* text-sm */
@@ -229,16 +241,9 @@
             color: #fff !important;
         }
         
-        /* Specific hover effect for gradient cards */
-        .gradient-form-a:hover,
-        .gradient-form-b:hover,
-        .gradient-form-c:hover,
-        .gradient-form-d:hover {
-            /* Hover effect similar to the linked site: lift, scale, subtle tilt, and shadow */
-            transform: perspective(600px) translateY(8px) scale(1.03) rotateX(10deg); /* Adjust translateY and rotateX for downward bend */
-            box-shadow: 0 12px 24px rgba(0,0,0,0.3) !important; /* Stronger shadow */
-            border-radius: 1.5rem 0.5rem 1.5rem 0.5rem/1.5rem 1.5rem 0.5rem 0.5rem; /* Asymmetric border radius for a 'bent' look */
-        }
+        /* Specific hover effect for gradient cards - This is now managed above, this block might be redundant or need adjustment */
+        /* The subtask description implies the custom transform should remain, so this block is adjusted to only affect shadow as per above. */
+        /* The existing .gradient-form-X:hover rules already handle the transform. */
 
         /* Add to the style section for smooth transition */
         .gradient-form-a,
@@ -259,10 +264,11 @@
         ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px;}
         ::-webkit-scrollbar-thumb:hover { background: #a8a8a8;}
 
+        /* 5. Nav Tabs active state */
         .nav-tabs .nav-link.active {
-            border-color: #dee2e6 #dee2e6 #fff;
-            border-bottom: 3px solid #00adb5 !important; /* accent */
-            color: #00adb5 !important; /* accent */
+            border-color: #dee2e6 #dee2e6 #fff; /* Keep existing top/side borders */
+            border-bottom: 3px solid #1C84FC !important; /* FB Blue accent */
+            color: #1C84FC !important; /* FB Blue accent */
         }
         .table th, .table td {
             white-space: nowrap;
@@ -309,18 +315,83 @@
         }
         /* Styling for dashboard title */
         #dashboardTitle {
-             color: #f8f9fa; /* Bright text color */
-             margin-left: 15px; /* Shift to the right */
-             transition: transform 0.4s cubic-bezier(.4,2,.6,1);
-             will-change: transform;
+            color: #1c1e21 !important; /* Dark text for light navbar, !important for specificity */
+            margin-left: 15px;
+            transition: transform 0.4s cubic-bezier(.4,2,.6,1);
+            will-change: transform;
         }
-        /* Styling for main content navbar */
+        /* 3. Main Content Navbar */
         .sapra-navbar-header {
-            background-color: #343a40; /* Match sidebar background */
+            background-color: #FFFFFF; /* White navbar */
+            /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); */ /* Optional: subtle shadow for white navbar */
         }
         .sapra-navbar-header .navbar-toggler-icon {
-            filter: invert(1);
+            filter: none; /* Remove invert as background is now light */
         }
+
+    /* 4. Cards - general styling for .card elements used for charts and tables */
+    /* Applying to .card elements that also have .shadow-sm, which are the ones we want to target */
+    .card.shadow-sm {
+        background-color: #FFFFFF;
+        border: 1px solid #E0E0E0; /* Lighter, more subtle border */
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); /* Softer, more subtle shadow */
+    }
+    /* Summary cards specific overrides if needed, but above should cover them if they have shadow-sm */
+    .summary-card { /* This class is on the section element, not the card div itself in some cases. Ensure it targets the card visuals. */
+        background-color: #FFFFFF; /* Ensure white background for non-gradient ones */
+        border: 1px solid #E0E0E0;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    /* 6. Buttons */
+    /* Generic .btn-outline-info changes */
+    .btn-outline-info {
+        color: #1C84FC;
+        border-color: #1C84FC;
+    }
+    .btn-outline-info:hover, .btn-outline-info:focus, .btn-outline-info:active {
+        color: #fff;
+        background-color: #1C84FC;
+        border-color: #1C84FC;
+        box-shadow: none; /* Remove Bootstrap's default focus shadow if desired for cleaner look */
+    }
+
+    /* Specific button: Export to Excel */
+    #exportExcelBtn, #exportDetailsExcelBtn { /* Apply to both export buttons */
+        background-color: #1C84FC;
+        border-color: #1C84FC;
+        color: #fff;
+    }
+    #exportExcelBtn:hover, #exportDetailsExcelBtn:hover {
+        background-color: #1A73E8; /* Slightly darker blue for hover */
+        border-color: #1A73E8;
+        color: #fff;
+    }
+
+    /* Total items badge */
+    span.badge.bg-primary { /* More specific selector for the total items badge */
+        background-color: #1C84FC !important; /* Override Bootstrap's primary */
+        color: #fff; /* Ensure text is white */
+    }
+
+    /* Loader color adjustments */
+    .sapra-loader svg circle[stroke="#00adb5"] {
+        stroke: #1C84FC !important; /* FB Blue */
+    }
+    .sapra-loader svg circle[stroke="#393e46"] {
+        stroke: #E0E0E0 !important; /* Lighter gray for the secondary loader circle */
+    }
+    #loadingModalLabel.fw-bold.text-info.mb-1 { /* More specific selector */
+        color: #1C84FC !important; /* FB Blue */
+    }
+
+    /* Ensure sidebar search input group text and input field have appropriate styles */
+    .sidebar-search .input-group-text {
+        /* Already dark, should be fine. If changing sidebar to light, this would need adjustment. */
+    }
+    .sidebar-search input {
+        /* Already dark, should be fine. */
+    }
     </style>
 <script type="importmap">
 {
@@ -343,7 +414,7 @@
         </div>
         <div class="sidebar-search">
             <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <span class="input-group-text"><span class="material-icons">search</span></span>
                 <input type="text" class="form-control form-control-sm" placeholder="Search system..." id="searchInput">
             </div>
         </div>
@@ -360,7 +431,7 @@
 
 
     <div class="main-content" id="mainContent">
-        <nav class="navbar navbar-expand-lg navbar-dark sapra-navbar-header shadow-sm sticky-top"> <!-- Changed bg-white to sapra-navbar-header and navbar-light to navbar-dark for text color contrast -->
+        <nav class="navbar navbar-expand-lg navbar-light sapra-navbar-header shadow-sm sticky-top"> <!-- Changed bg-white to sapra-navbar-header and navbar-light to navbar-dark for text color contrast -->
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" id="sidebarToggle" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -369,21 +440,21 @@
                 <div class="ms-auto d-flex align-items-center">
                 <!-- NEW BUTTONS START HERE -->
                 <a href="planning.html" target="_blank" class="btn btn-outline-info btn-sm me-2 d-flex align-items-center">
-                    <i class="bi bi-calendar-check me-1"></i> Project Planning
+                    <span class="material-icons me-1">event_available</span> Project Planning
                 </a>
                 <a href="documents.html" target="_blank" class="btn btn-outline-info btn-sm me-2 d-flex align-items-center">
-                    <i class="bi bi-file-earmark-text me-1"></i> Document Explorer
+                    <span class="material-icons me-1">article</span> Document Explorer
                 </a>
                 <a href="reports.html" target="_blank" class="btn btn-outline-info btn-sm me-2 d-flex align-items-center">
-                    <i class="bi bi-bar-chart-line me-1"></i> Reports
+                    <span class="material-icons me-1">bar_chart</span> Reports
                 </a>
                 <!-- NEW BUTTONS END HERE -->
 
                     <button class="btn btn-success btn-sm me-2 d-flex align-items-center" id="exportExcelBtn">
-                        <i class="bi bi-file-earmark-excel me-1"></i> Export to Excel
+                        <span class="material-icons me-1">file_download</span> Export to Excel
                     </button>
                     <span class="badge bg-primary d-flex align-items-center">
-                        <i class="bi bi-box-seam me-1"></i>
+                        <span class="material-icons me-1">inventory_2</span>
                         <span id="totalItemsCounter">0</span>&nbsp;items
                     </span>
                 </div>
@@ -637,7 +708,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success btn-sm me-auto" id="exportDetailsExcelBtn">
-                         <i class="bi bi-file-earmark-excel me-1"></i> Export Visible to Excel
+                         <span class="material-icons me-1">file_download</span> Export Visible to Excel
                      </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>

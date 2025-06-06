@@ -40,7 +40,7 @@
         if (app.state.aggregatedStats.totalItems === 0 || (app.state.aggregatedStats.done === 0 && app.state.aggregatedStats.pending === 0 && app.state.aggregatedStats.remaining === 0)) {
              overviewParent.insertAdjacentHTML('beforeend', '<div class="text-center text-muted small p-5">No data to display for General Status.</div>');
         } else {
-            app.state.chartInstances.overview = new Chart(overviewCtx, { type: 'doughnut', data: overviewChartData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: (context) => `${context.label}: ${context.formattedValue} (${Math.round(context.parsed / app.state.aggregatedStats.totalItems * 100)}%)`}}}} });
+            app.state.chartInstances.overview = new Chart(overviewCtx, { type: 'doughnut', data: overviewChartData, options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: (context) => `${context.label}: ${context.formattedValue} (${Math.round(context.parsed / app.state.aggregatedStats.totalItems * 100)}%)`}}}} });
         }
 
         const issuesCanvas = app.DOMElements.overviewChartsContainer.querySelector('#issuesChart'); // More robust selection
@@ -106,7 +106,7 @@
                         labels: ['Completed', 'Pending', 'Remaining'],
                         datasets: [{ label: name, data: [data.done, data.pending, data.remaining], backgroundColor: [app.constants.COLORS_STATUS_CHARTJS.done, app.constants.COLORS_STATUS_CHARTJS.pending, app.constants.COLORS_STATUS_CHARTJS.remaining] }]
                     };
-                    app.state.chartInstances.disciplines[name] = new Chart(ctx, { type: 'doughnut', data: chartData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth:10, font: {size: 10}} }, tooltip: { callbacks: { label: (context) => `${context.label}: ${context.formattedValue} (${data.total > 0 ? Math.round(context.parsed / data.total * 100) : 0}%)`}}} } });
+                    app.state.chartInstances.disciplines[name] = new Chart(ctx, { type: 'doughnut', data: chartData, options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth:10, font: {size: 10}} }, tooltip: { callbacks: { label: (context) => `${context.label}: ${context.formattedValue} (${data.total > 0 ? Math.round(context.parsed / data.total * 100) : 0}%)`}}} } });
                 }, 0);
             } else {
                  setTimeout(() => {
@@ -188,7 +188,7 @@
                         labels: ['Completed', 'Pending', 'Remaining'],
                         datasets: [{ label: item.name, data: [item.data.done, item.data.pending, item.data.remaining], backgroundColor: [app.constants.COLORS_STATUS_CHARTJS.done, app.constants.COLORS_STATUS_CHARTJS.pending, app.constants.COLORS_STATUS_CHARTJS.remaining] }]
                     };
-                    app.state.chartInstances.systems[item.id] = new Chart(ctx, { type: 'doughnut', data: chartData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth:10, font: {size: 10}} }, tooltip: { callbacks: { label: (context) => `${context.label}: ${context.formattedValue} (${item.data.totalItems > 0 ? Math.round(context.parsed / item.data.totalItems * 100) : 0}%)`}} }} });
+                    app.state.chartInstances.systems[item.id] = new Chart(ctx, { type: 'doughnut', data: chartData, options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth:10, font: {size: 10}} }, tooltip: { callbacks: { label: (context) => `${context.label}: ${context.formattedValue} (${item.data.totalItems > 0 ? Math.round(context.parsed / item.data.totalItems * 100) : 0}%)`}} }} });
                 }, 0);
             } else {
                 setTimeout(() => {
