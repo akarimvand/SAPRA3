@@ -330,18 +330,43 @@
         }
 
     /* 4. Cards - general styling for .card elements used for charts and tables */
-    /* Applying to .card elements that also have .shadow-sm, which are the ones we want to target */
-    .card.shadow-sm {
+    /* Rule for .card.shadow-sm that are NOT gradient cards */
+    .card.shadow-sm:not(.gradient-form-a):not(.gradient-form-b):not(.gradient-form-c):not(.gradient-form-d) {
         background-color: #FFFFFF;
-        border: 1px solid #E0E0E0; /* Lighter, more subtle border */
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); /* Softer, more subtle shadow */
+        border: 1px solid #E0E0E0; /* This border is for general cards like chart area, data table area */
     }
-    /* Summary cards specific overrides if needed, but above should cover them if they have shadow-sm */
-    .summary-card { /* This class is on the section element, not the card div itself in some cases. Ensure it targets the card visuals. */
-        background-color: #FFFFFF; /* Ensure white background for non-gradient ones */
-        border: 1px solid #E0E0E0;
+    /* General shadow for all cards with .shadow-sm, including gradient ones */
+    .card.shadow-sm {
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
     }
+
+    /* Rule for .summary-card that are NOT gradient cards */
+    /* This primarily targets the non-gradient summary cards (Completed, Pending, Remaining, Issues) */
+    .summary-card:not(.gradient-form-a):not(.gradient-form-b):not(.gradient-form-c):not(.gradient-form-d) {
+        background-color: #FFFFFF;
+        border: 1px solid #E0E0E0; /* Border for the white summary cards */
+        /* Text colors are handled by more specific classes within these cards (e.g. text-muted, text-success) */
+    }
+    /* Common layout for ALL summary cards (gradient or not) */
+    /* This rule should combine existing common properties with any new common ones */
+    /* .summary-card definition from before this change already included:
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        min-height: 160px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+       The specific background, border, and shadow for non-gradient summary cards are now handled by the :not selector above.
+       The general .card.shadow-sm handles the shadow for all cards including gradient ones.
+       So, the existing .summary-card rule that is not part of the :not selector is mostly fine.
+       We need to ensure that the original .summary-card rule (lines 177-182) does not re-apply a conflicting
+       background-color or border to ALL summary cards.
+       The existing .summary-card rule will be implicitly modified by the more specific :not rule above.
+       Let's make sure the generic .summary-card doesn't have background or border that would conflict.
+    */
+    /* The original .summary-card rule is fine as it is, its properties like min-height, display etc. are still needed.
+       The more specific :not rule above will override background and border for non-gradient ones.
+       And gradient cards have their own .gradient-form-* rules for background.
+    */
 
     /* 6. Buttons */
     /* Generic .btn-outline-info changes */
