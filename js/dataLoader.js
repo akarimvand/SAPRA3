@@ -75,8 +75,8 @@
             }
 
             const total = getCsvNumericValue(row, ["TOTAL ITEM", "Total Item", "total item", "TOTAL_ITEM"]);
-            const done = getCsvNumericValue(row, ["TOTAL DONE", "Total Done", "total done", "TOTAL_DONE"]);
-            const pending = getCsvNumericValue(row, ["TOTAL PENDING", "Total Pending", "total pending", "TOTAL_PENDING"]);
+            const done = getCsvNumericValue(row, ["TOTAL DONE", "Total Done", "total done", "TOTAL_DONE", "Done", "DONE", "COMPLETED", "Total Completed", "TOTAL_COMPLETED", "Completed"]);
+            const pending = getCsvNumericValue(row, ["TOTAL PENDING", "Total Pending", "total pending", "TOTAL_PENDING", "Pending", "PENDING"]);
             const punch = getCsvNumericValue(row, ["TOTAL NOT CLEAR PUNCH", "Total Not Clear Punch", "total not clear punch", "TOTAL_NOT_CLEAR_PUNCH", "PUNCH"]); // Added "PUNCH" as a common short name
             const hold = getCsvNumericValue(row, ["TOTAL HOLD POINT", "Total Hold Point", "total hold point", "TOTAL_HOLD_POINT", "HOLD"]); // Added "HOLD" as a common short name
 
