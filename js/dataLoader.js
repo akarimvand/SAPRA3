@@ -24,6 +24,27 @@
         });
     }
 
+    function getCsvNumericValue(row, possibleKeys, defaultValue = 0) {
+        if (!row || typeof row !== 'object') {
+            return defaultValue;
+        }
+        for (const key of possibleKeys) {
+            if (row.hasOwnProperty(key) && row[key] !== undefined && row[key] !== null && row[key] !== '') {
+                const value = parseInt(row[key]);
+                return isNaN(value) ? defaultValue : value;
+            }
+        }
+        /*
+        // Optional console warning - useful for debugging by the user later
+        const availableKeys = Object.keys(row).join(', ');
+        console.warn(
+            `None of the expected keys [${possibleKeys.join(', ')}] found or had a valid non-empty value in CSV row. ` +
+            `Defaulting to ${defaultValue}. Available keys in row: [${availableKeys}].`
+        );
+        */
+        return defaultValue;
+    }
+
     // Helper function to process raw data from DATA.CSV into systemMap and subSystemMap
     function processRawDataToMaps(allRawData) {
         const systemMap = {};
@@ -53,16 +74,18 @@
                 subSystemMap[subId] = { id: subId, name: subName, systemId: systemId, title: `${subId} - ${subName}`, disciplines: {} };
             }
 
-            const total = parseInt(row["TOTAL ITEM"]) || 0;
-            const done = parseInt(row["TOTAL DONE"]) || 0;
-            const pending = parseInt(row["TOTAL PENDING"]) || 0;
+            const total = getCsvNumericValue(row, ["TOTAL ITEM", "Total Item", "total item", "TOTAL_ITEM"]);
+            const done = getCsvNumericValue(row, ["TOTAL DONE", "Total Done", "total done", "TOTAL_DONE"]);
+            const pending = getCsvNumericValue(row, ["TOTAL PENDING", "Total Pending", "total pending", "TOTAL_PENDING"]);
+            const punch = getCsvNumericValue(row, ["TOTAL NOT CLEAR PUNCH", "Total Not Clear Punch", "total not clear punch", "TOTAL_NOT_CLEAR_PUNCH", "PUNCH"]); // Added "PUNCH" as a common short name
+            const hold = getCsvNumericValue(row, ["TOTAL HOLD POINT", "Total Hold Point", "total hold point", "TOTAL_HOLD_POINT", "HOLD"]); // Added "HOLD" as a common short name
 
             subSystemMap[subId].disciplines[discipline] = {
                 total: total,
                 done: done,
                 pending: pending,
-                punch: parseInt(row["TOTAL NOT CLEAR PUNCH"]) || 0,
-                hold: parseInt(row["TOTAL HOLD POINT"]) || 0,
+                punch: punch,
+                hold: hold,
                 remaining: Math.max(0, total - done - pending)
             };
         });
