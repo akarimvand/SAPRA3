@@ -61,7 +61,23 @@
               issuesParent.insertAdjacentHTML('beforeend', '<div class="text-center text-muted small p-5">No issues data to display.</div>');
         } else {
             const totalIssues = app.state.aggregatedStats.punch + app.state.aggregatedStats.hold;
-            app.state.chartInstances.issues = new Chart(issuesCtx, { type: 'pie', data: issuesChartData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: (context) => `${context.label}: ${context.formattedValue} (${totalIssues > 0 ? Math.round(context.parsed / totalIssues * 100) : 0}%)`}}}} });
+            app.state.chartInstances.issues = new Chart(issuesCtx, {
+                type: 'doughnut', // Changed to doughnut
+                data: issuesChartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%', // Added cutout
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `${context.label}: ${context.formattedValue} (${totalIssues > 0 ? Math.round(context.parsed / totalIssues * 100) : 0}%)`
+                            }
+                        }
+                    }
+                }
+            });
         }
     };
 
